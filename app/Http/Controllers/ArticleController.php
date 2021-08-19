@@ -88,7 +88,8 @@ class ArticleController extends Controller
 
     public function allBytag(Tag $tag)
     {
-        $articles = $tag->articles()->findByTag();
+
+        $articles = $tag->articles()->findByTag(10);
 
         return view('app.articles.by-tag', compact('articles'));
     }

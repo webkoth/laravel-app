@@ -13,7 +13,7 @@ export default new Vuex.Store({
         slug: '',
     },
     actions: {
-
+        
     },
     getters: {
         articleSlugRevers(state) {

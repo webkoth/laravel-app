@@ -20,17 +20,16 @@
         <div class="alert alert-success" role="alert" v-else>
             Комментарий успешно отправлен!
         </div>
-        <div class="toast-container pb-2 mt-5 mx-auto" style="min-width: 100%;" v-for="comment in comments">
-            <div class="toast showing" style="min-width: 100%;">
-                <div class="toast-header">
+        <div class="list-group" v-for="comment in comments">
+            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
                     <img src="https://via.placeholder.com/50/5F113B/FFFFFF/?text=User" class="rounded me-2" alt="...">
-                    <strong class="me-auto">{{comment.subject}}</strong>
-                    <small class="text-muted">{{comment.created_at}}</small>
+                    <h5 class="mb-1">{{ comment.subject }}</h5>
+                    <small>{{ comment.created_at }}</small>
                 </div>
-                <div class="toast-body">
-                    {{comment.body}}
-                </div>
-            </div>
+                <p class="mb-1">{{ comment.body}}</p>
+                <small>And some small print.</small>
+            </a>
         </div>
     </div>
 </template>

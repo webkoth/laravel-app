@@ -1846,6 +1846,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+var _mapState;
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -1869,18 +1873,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  computed: (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
-    // article: 'article',
-    article: function article(state) {
-      return state.article.article;
-    },
-    tagsLen: function tagsLen(state) {
-      return state.article.article.tags.length;
-    }
-  }),
-  mounted: function mounted() {
-    console.log('Component article mounted.');
-  }
+  computed: (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)((_mapState = {
+    article: 'article'
+  }, _defineProperty(_mapState, "article", function article(state) {
+    return state.article.article;
+  }), _defineProperty(_mapState, "tagsLen", function tagsLen(state) {
+    return state.article.article.tags.length;
+  }), _mapState)),
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -1896,7 +1896,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
 //
 //
 //
@@ -2039,9 +2038,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2067,9 +2064,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.$store.getters['article/articleViews'];
     }
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -2087,19 +2082,13 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js").default;
- // const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue").default);
-Vue.component('article-component', __webpack_require__(/*! ./components/ArticleComponent.vue */ "./resources/js/components/ArticleComponent.vue").default);
-Vue.component('views-component', __webpack_require__(/*! ./components/ViewsComponent.vue */ "./resources/js/components/ViewsComponent.vue").default);
-Vue.component('likes-component', __webpack_require__(/*! ./components/LikesComponent.vue */ "./resources/js/components/LikesComponent.vue").default);
-Vue.component('comments-component', __webpack_require__(/*! ./components/CommentsComponent.vue */ "./resources/js/components/CommentsComponent.vue").default);
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+
+var files = __webpack_require__("./resources/js sync recursive \\.vue$/");
+
+files.keys().map(function (key) {
+  return Vue.component(key.split('/').pop().split('.')[0], files(key)["default"]);
+}); // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 var app = new Vue({
   store: _store__WEBPACK_IMPORTED_MODULE_0__.default,
@@ -2107,8 +2096,6 @@ var app = new Vue({
   created: function created() {
     var url = window.location.pathname;
     var slug = url.substring(url.lastIndexOf('/') + 1);
-    console.log(url);
-    console.log(slug);
     this.$store.commit('SET_SLUG', slug);
     this.$store.dispatch('article/getArticleData', slug);
     this.$store.dispatch('article/viewsIncrement', slug);
@@ -2187,10 +2174,8 @@ var state = {
   errors: []
 };
 var actions = {
-  // context = {state, commit}
+  //context = {state, commit}
   getArticleData: function getArticleData(context, payload) {
-    console.log("context", context);
-    console.log("payload", payload);
     axios.get('/api/article-json', {
       params: {
         slug: payload
@@ -2198,12 +2183,10 @@ var actions = {
     }).then(function (response) {
       context.commit('SET_ARTICLE', response.data.data);
     })["catch"](function () {
-      console.log('Ошибка');
+      console.log('Ошибка запроса к articleData');
     });
   },
   viewsIncrement: function viewsIncrement(context, payload) {
-    console.log("rootState.slug", context.rootState.slug);
-    console.log("rootGetters.articleSlugRevers", context.rootGetters.articleSlugRevers);
     setTimeout(function () {
       axios.put('/api/article-views-increment', {
         slug: payload
@@ -20494,7 +20477,7 @@ var render = function() {
       _c(
         "p",
         _vm._l(_vm.article.tags, function(tag, index) {
-          return _c("span", { staticClass: "tag" }, [
+          return _c("span", { key: index, staticClass: "tag" }, [
             _vm.tagsLen == index + 1
               ? _c("span", [_vm._v(_vm._s(tag.label))])
               : _c("span", [_vm._v(_vm._s(tag.label) + " | ")])
@@ -20669,21 +20652,18 @@ var render = function() {
           ),
       _vm._v(" "),
       _vm._l(_vm.comments, function(comment) {
-        return _c(
-          "div",
-          {
-            staticClass: "toast-container pb-2 mt-5 mx-auto",
-            staticStyle: { "min-width": "100%" }
-          },
-          [
-            _c(
-              "div",
-              {
-                staticClass: "toast showing",
-                staticStyle: { "min-width": "100%" }
-              },
-              [
-                _c("div", { staticClass: "toast-header" }, [
+        return _c("div", { staticClass: "list-group" }, [
+          _c(
+            "a",
+            {
+              staticClass: "list-group-item list-group-item-action",
+              attrs: { href: "#", "aria-current": "true" }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "d-flex w-100 justify-content-between" },
+                [
                   _c("img", {
                     staticClass: "rounded me-2",
                     attrs: {
@@ -20693,26 +20673,20 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("strong", { staticClass: "me-auto" }, [
+                  _c("h5", { staticClass: "mb-1" }, [
                     _vm._v(_vm._s(comment.subject))
                   ]),
                   _vm._v(" "),
-                  _c("small", { staticClass: "text-muted" }, [
-                    _vm._v(_vm._s(comment.created_at))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "toast-body" }, [
-                  _vm._v(
-                    "\n                " +
-                      _vm._s(comment.body) +
-                      "\n            "
-                  )
-                ])
-              ]
-            )
-          ]
-        )
+                  _c("small", [_vm._v(_vm._s(comment.created_at))])
+                ]
+              ),
+              _vm._v(" "),
+              _c("p", { staticClass: "mb-1" }, [_vm._v(_vm._s(comment.body))]),
+              _vm._v(" "),
+              _c("small", [_vm._v("And some small print.")])
+            ]
+          )
+        ])
       })
     ],
     2
@@ -34261,6 +34235,42 @@ var index = {
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (index);
 
 
+
+/***/ }),
+
+/***/ "./resources/js sync recursive \\.vue$/":
+/*!************************************!*\
+  !*** ./resources/js/ sync \.vue$/ ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var map = {
+	"./components/ArticleComponent.vue": "./resources/js/components/ArticleComponent.vue",
+	"./components/CommentsComponent.vue": "./resources/js/components/CommentsComponent.vue",
+	"./components/ExampleComponent.vue": "./resources/js/components/ExampleComponent.vue",
+	"./components/LikesComponent.vue": "./resources/js/components/LikesComponent.vue",
+	"./components/ViewsComponent.vue": "./resources/js/components/ViewsComponent.vue"
+};
+
+
+function webpackContext(req) {
+	var id = webpackContextResolve(req);
+	return __webpack_require__(id);
+}
+function webpackContextResolve(req) {
+	if(!__webpack_require__.o(map, req)) {
+		var e = new Error("Cannot find module '" + req + "'");
+		e.code = 'MODULE_NOT_FOUND';
+		throw e;
+	}
+	return map[req];
+}
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = "./resources/js sync recursive \\.vue$/";
 
 /***/ })
 

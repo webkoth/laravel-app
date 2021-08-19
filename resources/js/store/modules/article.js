@@ -15,19 +15,16 @@ export const state = {
 }
 
 export const actions = {
-    // context = {state, commit}
+    //context = {state, commit}
     getArticleData(context, payload) {
-        console.log("context", context)
-        console.log("payload", payload)
-        axios.get('/api/article-json', { params: {slug:payload } }).then((response) =>{
+        axios.get('/api/article-json', { params: {slug:payload } 
+        }).then((response) =>{
             context.commit('SET_ARTICLE', response.data.data)
         }).catch(()=>{
-            console.log('Ошибка')
+            console.log('Ошибка запроса к articleData')
         });
     },
     viewsIncrement(context, payload){
-        console.log("rootState.slug", context.rootState.slug)
-        console.log("rootGetters.articleSlugRevers", context.rootGetters.articleSlugRevers)
         setTimeout(() => {
             axios.put('/api/article-views-increment',  {slug:payload }).then((response) =>{
                 context.commit('SET_ARTICLE', response.data.data)
